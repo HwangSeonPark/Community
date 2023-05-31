@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="//www.thymeleaf.org" lang="ko">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Grad Connect</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        
+    	<link rel="stylesheet" type="text/css" href="css/styles2.css">
+		
+		
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+    
+    </head>
+    <body class="d-flex flex-column">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="max-height: 60px;">
+                <div class="container px-5">
+                    <a class="navbar-brand" th:href="@{bdList}" style="font-size: 24px;">GradConnect</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item"><a class="nav-link" th:text="'ID: ' + ${session.id}"></a></li>
+                            <li class="nav-item"><a class="nav-link" th:text="'Level: ' + ${session.mbLevel}"></a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{logout}"> Logout </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="max-height: 40px;">
+			    <div class="container px-5">
+			        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			        <div class="collapse navbar-collapse justify-content-start" id="navbarSupportedContent">
+			            <ul class="navbar-nav mb-2 mb-lg-0">
+			                <li class="nav-item"><a class="nav-link" th:href="@{admin}">Manager</a></li>
+			                <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Recruitment</a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
+                                    <li><a class="dropdown-item" th:href="@{bdList}">View Posts</a></li>
+                                    <li><a class="dropdown-item" th:href="@{fillin}">Create a post</a></li>
+                                </ul>
+                            </li><li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Community</a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
+                                    <li><a class="dropdown-item" th:href="@{cocoList}">View Posts</a></li>
+                                    <li><a class="dropdown-item" th:href="@{fillin2}">Create a post</a></li>
+                                </ul>
+                            </li>
+			            </ul>
+			        </div>
+			    </div>
+			</nav>
+
+            <!-- Page content-->
+			<section class="py-5" style="margin-top: 30px;">
+			           <div class="container px-5">
+			               <!-- Contact form-->
+			               <th:block th:if="${session.id != 'admin'}">
+			               <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
+			                   <div class="text-center mb-5">
+			                       <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3">
+			 						<i class="bi bi-person-fill"></i> 
+								</div>
+			                       <h1 class="fw-bolder">Staff only</h1>
+			                       <p class="lead fw-normal text-muted mb-0">This page is for employees only.</p>
+			                   </div>
+			                   <div class="row gx-5 justify-content-center">
+			                       <div class="col-lg-8 col-xl-6">
+										<div class="d-grid">
+			                                   <a class="btn btn-primary btn-lg" id="submitButton" th:href="@{bdList}" role="button">HOME</a>
+			                            </div>
+			                       </div>
+			                   </div>
+			               </div>
+			               </th:block>
+			           </div>
+			        </div>
+			</section>
+			
+
+        
+			   <th:block th:if="${session.id == 'admin'}">
+			   
+				<div class="title1" style="margin-top: -75px;">Administrator page</div>
+				<br>
+				<br>
+				<br>
+				
+				<form role="form" action="create" method="post">
+				    <div class="section form">
+				        <table style="width: 630px; margin-bottom: 20px; margin-right: 120px;">
+				            <colgroup>
+				                <col style="width:10%" />
+				                <col style="width:30%" />
+				                <col style="width:10%" />
+				                <col style="width:30%" />
+				                <col style="width:0%" />
+				                <col style="width:20%" />
+				            </colgroup>
+				            <tbody>
+				                <tr style="border-top: 2px solid #0000; border-bottom: 2px solid #0000;">
+				                    <td style="padding: 0px; margin-left: 30px;">
+				                        <span>ID :</span>
+				                    </td>
+				                    <td style="padding: 0px; margin-left: 0px;">
+				                        <input class="form-control" name="id" type="text" placeholder="id" required />
+				                    </td>
+				                    <td style="padding: 0px; margin-right: 0px;">
+				                        <span>PW :</span>
+				                    </td>
+				                    <td style="padding: 0px; margin-left: 0px;">
+				                        <input class="form-control" name="pw" type="password" placeholder="password" required />
+				                    </td>
+				                    <td>
+				                        <input type="hidden" name="admin" value="admin" required />
+				                    </td>
+				                    <td style="padding: 0px; margin-left: 0px;">
+				                        <div class="button">
+				                            <button class="btn btn-primary btn-lg" type="submit" style="width: 100%; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: bold;">Add Member</button>
+				                        </div>
+				                    </td>
+				                </tr>
+				            </tbody>
+				        </table>
+				    </div>
+				</form>
+   
+			   
+			   
+			   
+			   
+				<div class="section list">
+				    <table>
+				        <colgroup>
+				            <col style="width: 15%"/>
+				            <col style="width: 15%"/>
+				            <col style="width: 8%"/>
+				            <col style="width: 10%"/>
+				            <col style="width: 8%"/>
+				            <col style="width: 15%"/>
+				            <col style="width: 15%"/>
+				            <col style="width: 14%"/>
+				        </colgroup>
+				        <thead>
+					        <tr>
+					            <th>아이디</th>
+					            <th>패스워드</th>
+					            <th>회원등급</th>
+					            <th>아이피</th>
+					            <th>사용여부</th>
+					            <th>생성일자</th>
+					            <th>업데이트일자</th>
+					            <th>변경</th>
+					        </tr>
+				        </thead>
+				        <tbody>
+				            <tr th:if=${itemsNotEmpty} th:each="item : ${items}">
+				               <!--  <td th:text="${item.mbSeq}"></td>  -->
+				                <td th:text="${item.mbId}"></td>
+				                <td th:text="${item.mbPw}"></td>
+				                <td th:text="${item.mbLevel}"></td>
+				                <td th:text="${item.mbIp}"></td>
+				                <td th:text="${item.mbUse}"></td>
+				                <td th:text="${item.mbCreateAt}"></td>
+				                <td th:text="${item.mbUpdateAt}"></td>
+				                <td style=" align-items: center; justify-content: center">        
+									<a class="btn btn-primary bg-transparent text-primary" id="submitButton" th:href="@{/modify/{mbSeq}(mbSeq = ${item.mbSeq})}" role="button" style="width: 37%; height: 33px; font-size: 15px;">수정</a>
+									<a class="btn btn-primary bg-transparent text-primary" id="submitButton" th:href="@{/remove/{mbSeq}(mbSeq = ${item.mbSeq})}" role="button" style="width: 37%; height: 33px; font-size: 15px;">삭제</a>   
+				                </td>
+				            </tr>
+				            <tr th:unless=${itemsNotEmpty}>
+				                <td colspan="8" style="padding: 60px 0"> 데이터가 없습니다 </td>
+				            </tr>
+				        </tbody>
+				    </table>
+				    
+					<div th:if="${itemsNotEmpty}" class="centered-pagination">
+					  <ul> 
+					    <th:block th:switch="${startpage} <= ${endpage}">
+					      <li th:case="${rowNUM} < 0" style="display: none;">
+					        <a class="arrow first" th:href="@{mbList(page=${1})}"><i class="fa fa-angle-left" style="color:black"></i></a>
+					      </li>
+					      <li th:case="${rowNUM} > ${startpage}" style="display: inline-block">
+					        <a class="arrow first" th:href="@{mbList(page=${startpage})}"><i class="fa fa-angle-left" style="color:black"></i></a>
+					      </li>
+					      <li th:case="${startpage} < 10" style="display: none;">
+					        <a class="arrow first" th:href="@{mbList(page=${startpage}-10)}"><i class="fa fa-angle-left" style="color:black"></i></a>
+					      </li>
+					      <li th:case="${startpage} > 10" style="display: inline-block;">
+					        <a class="arrow first" th:href="@{mbList(page=${1})}"><i class="fa fa-angle-left" style="color:black"></i></a>
+					      </li>
+					    </th:block>
+					
+					    <th:block th:switch="${rowNUM} >= 1">
+					      <li th:case="(${rowNUM}-1) == 0" style="display: none">
+					        <a class="arrow first" th:href="@{mbList(page=${1})}"><i class="fa fa-angle-left" style="color:black"></i></a>
+					      </li>
+					      <li th:case="(${rowNUM}-1) > 0" style="display: inline-block">
+					        <a class="arrow first" th:href="@{mbList(page=${rowNUM}-1)}"><i class="fa fa-angle-left" style="color:black"></i></a>
+					      </li>
+					    </th:block>
+					
+					    <!-- for 문 -->
+					    <li th:each="i : ${#numbers.sequence(startpage, endpage)}" style="display: inline-block">
+					      <div class="active" th:if="${i}==${rowNUM}" th:text="${i}"></div>
+					      <div th:unless="${i}==${rowNUM}">
+					        <a class="active" th:href="@{mbList(page=${i})}" th:text="${i}" style="margin: 0 5px;"></a>
+					      </div>
+					    </li>
+					    <!-- for 문 -->
+					
+					    <th:block th:switch="${rowNUM} <= ${endpage}">
+					      <li th:case="${rowNUM} < ${endpage}" style="display: inline-block">
+					        <a class="arrow last" th:href="@{mbList(page=${rowNUM}+1)}"><i class="fa fa-angle-right" style="color:black"></i></a>
+					      </li>
+					      <li th:case="${rowNUM} == ${endpage}" style="display: none">
+					        <a class="arrow last" th:href="@{mbList(page=${endpage})}"><i class="fa fa-angle-right" style="color:black"></i></a>
+					      </li>
+					    </th:block>
+					
+					    <th:block th:switch="${rowNUM} < ${endpage}">
+					      <li th:case="${rowNUM} < ${endpage}" style="display: inline-block">
+					        <a class="arrow last" th:href="@{mbList(page=${startpage}+10)}"><i class="fa fa-angle-right" style="color:black"></i></a>
+					      </li>
+					    </th:block>
+					
+					  </ul>
+					</div>
+
+
+
+				</div>
+			           
+			   </th:block>
+   
+
+        </main>
+        <!-- Footer-->
+        <footer class="bg-dark py-4 mt-auto">
+            <div class="container px-5">
+                <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                    <div class="col-auto"><div class="small m-0 text-white">Produced in May 2023</div></div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    </body>
+</html>
+

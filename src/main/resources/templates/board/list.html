@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="//www.thymeleaf.org" lang="ko">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        
+        <th:block layout:fragment="script">
+        <script type="text/javascript">
+           history.pushState(null, null, location.href);
+           window.onpopstate = function(){
+               history.go(1);
+           }
+        </script>
+   		 </th:block>
+        
+        <title>Grad Connect</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        
+        <link rel="stylesheet" type="text/css" href="css/styles2.css">
+        
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+    </head>
+    <body class="d-flex flex-column">
+        <main class="flex-shrink-0">
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="max-height: 60px;">
+                <div class="container px-5">
+                    <a class="navbar-brand" th:href="@{bdList}" style="font-size: 24px;">GradConnect</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item"><a class="nav-link" th:text="'ID: ' + ${session.id}"></a></li>
+                            <li class="nav-item"><a class="nav-link" th:text="'Level: ' + ${session.mbLevel}"></a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{logout}"> Logout </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="max-height: 40px;">
+			    <div class="container px-5">
+			        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			        <div class="collapse navbar-collapse justify-content-start" id="navbarSupportedContent">
+			            <ul class="navbar-nav mb-2 mb-lg-0">
+			                <li class="nav-item"><a class="nav-link" th:href="@{admin}">Manager</a></li>
+			                <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Recruitment</a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
+                                    <li><a class="dropdown-item" th:href="@{bdList}">View Posts</a></li>
+                                    <li><a class="dropdown-item" th:href="@{fillin}">Create a post</a></li>
+                                </ul>
+                            </li><li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Community</a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
+                                    <li><a class="dropdown-item" th:href="@{cocoList}">View Posts</a></li>
+                                    <li><a class="dropdown-item" th:href="@{fillin2}">Create a post</a></li>
+                                </ul>
+                            </li>
+			            </ul>
+			        </div>
+			    </div>
+			</nav>
+
+		<div class="title1" th:unless="${detail}">
+	    Recruitment of researchers
+		</div>
+		<br>
+		<br>
+		
+		
+		<div class="table" th:unless="${detail}">
+		<div class="form">   
+		
+		<form role="form" action="searchContent2" method="post"  enctype="multipart/form-data">
+				
+		<div class="search" style="display: flex; justify-content: flex-end; margin-right: 113px;">
+		    <div>
+		        <input id="searchtitle" type="text" name="searchtitle" placeholder="제목을 입력하세요." aria-label="제목을 입력하세요." aria-describedby="button-newsletter">
+		        <button id="button-newsletter" type="submit" style="background-color: #007bff;">Search</button>
+		    </div>
+		</div>	
+
+		</div>
+		    <table>
+		        <colgroup>
+		            <col style="width: 7%"/>
+		            <col style="width: 52%"/>
+		            <col style="width: 15%"/>
+		            <col style="width: 15%"/>
+		            <col style="width: 10%"/>
+		        </colgroup>
+		        <thead>
+		            <tr>
+		                <th>번호</th>
+		                <th>제목</th>
+		                <th>학교</th>
+		                <th>등록일</th>
+		                <th>조회</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		             <tr th:each="item : ${items}">
+		                <td th:text="${item.bdSeq}"></td>
+		                <td>
+		                    <a class="titlelink" th:text="${item.bdTitle}" th:href="@{/adetail(bdSeq = ${item.bdSeq})}"></a>
+		                </td>
+		                <td th:text="${item.bdUniversity}"></td>
+		                <td th:text="${item.bdCreateAt}"></td>
+		                <td th:text="${item.bdCount}"></td>
+		            </tr>
+		        </tbody>
+		    </table>
+		</div>
+		
+		<div class="section" th:if="${adetail}">
+		   
+				<div class="line"></div>
+
+
+				<h2 style="padding: 20px 0 10px 0; position: relative; z-index: 2; margin-left: 150px;" th:text="${adetail.bdTitle}"></h2>
+				
+				
+		
+				<div class="info-section" style="position: relative; z-index: 2; color: gray; margin-left: 150px;">
+				    <span style="font-weight: bold;">번호</span> <span style="margin-left: 8px; margin-right: 8px;" th:text="${adetail.bdSeq}"></span> <span style="font-weight: lighter; margin-left: 10px; margin-right: 10px;">|</span>
+				    <span style="font-weight: bold;">작성자</span> <span style="margin-left: 8px; margin-right: 8px;" th:text="${adetail.mbId}"></span> <span style="font-weight: lighter; margin-left: 10px; margin-right: 10px;">|</span>
+				    <span style="font-weight: bold;">학교</span> <span style="margin-left: 8px; margin-right: 8px;" th:text="${adetail.bdUniversity}"></span> <span style="font-weight: lighter; margin-left: 10px; margin-right: 10px;">|</span>
+				    <span style="font-weight: bold;">등록일</span> <span style="margin-left: 8px; margin-right: 8px;" th:text="${adetail.bdCreateAt}"></span> <span style="font-weight: lighter; margin-left: 10px; margin-right: 10px;">|</span>
+				    <span style="font-weight: bold;">수정일</span> <span style="margin-left: 8px; margin-right: 8px;" th:text="${adetail.bdUpdateAt}"></span> <span style="font-weight: lighter; margin-left: 10px; margin-right: 10px;">|</span>
+				    <span style="font-weight: bold;">조회</span> <span th:text="${detail.bdCount}"></span>				
+				</div>
+
+		        <div style="position: relative;">
+				  <hr style="position: absolute; top: -2px; left: 100px; right: 100px; border: none; border-top: 1px solid #333;">
+				</div>
+				<br>
+		        <div style="position: relative; z-index: 2; margin-left: 150px;">
+		            <p style="padding: 30px 0;" th:text="${adetail.bdContent}"></p>
+		        </div>  
+		        
+				<br>
+				
+				 <div style="position: relative; z-index: 2; margin-left: 150px;">
+		            <ul th:if="${files}" th:each="file : ${files}" style="display: inline-block; margin-bottom: 5px;">
+		                <li>
+		                    <img id="imgId" th:src="@{${file.upNewFileName}}" alt="첨부이미지" height="280"
+		                         style="width: auto; max-height: 280px; max-width: 100%;"/>
+		                </li>
+		            </ul>
+		        </div>
+		
+		       <div class="button-container text-end" style="position: fixed; bottom: 110px; right: 130px; z-index: 2;">
+				    <div style="display: inline-block;">
+				        <a class="btn btn-primary btn-sm" id="submitButton" th:href="@{bdList}" role="button" style="width: 150%;">Home</a>
+				    </div>
+				</div>
+				
+				<div class="button-container" style="position: fixed; bottom: 485px; right: 100px; z-index: 2;">
+				    <th:block th:if="${adetail.mbId == session.id}">
+				        <div style="display: inline-block; margin-right: 10px;">
+				            <a th:href="@{/edit(bdSeq = ${detail.bdSeq})}">
+				                <button style="background: none; border: none;">
+				                    <i class="fas fa-pencil-alt" style="font-size: 25px; color: gray;"></i>
+				                </button>
+				            </a>
+				        </div>
+				        
+				        <span style="font-size: 20px; color: gray; font-weight: lighter;">|</span>
+				        
+				        <div style="display: inline-block; margin-left: 10px;">
+				            <a th:href="@{/remove(bdSeq = ${adetail.bdSeq})}">
+				                <button style="background: none; border: none;">
+				                    <i class="fas fa-trash-alt" style="font-size: 25px; color: gray;"></i>
+				                </button>
+				            </a>
+				        </div>
+				    </th:block>
+				</div>
+								
+		
+		
+		        <div style="position: absolute; left: 50%; top: 55%; transform: translate(-50%, -50%); z-index: 1;">
+		            <!-- Background image or color can be added here if desired -->
+		        </div>
+		    </div>
+		</div>	    
+        </main>
+         <!-- Footer-->
+        <footer class="bg-dark py-4 mt-auto">
+            <div class="container px-5">
+                <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                    <div class="col-auto"><div class="small m-0 text-white">Produced in May 2023</div></div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

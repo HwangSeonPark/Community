@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.co.kr.mapper.CommunityMapper">
+
+	<select id="communityList" resultType="com.co.kr.domain.CommunityListDomain">
+	  SELECT co_seq, mb_id, co_classification, co_title, co_content, co_create_at, co_update_at, co_count
+	  FROM community.com order by co_seq desc
+	</select>
+	
+	<insert id="communitycontentUpload" parameterType="com.co.kr.domain.CommunityContentDomain"
+	useGeneratedKeys="true"
+        keyProperty="coSeq" keyColumn="co_seq">
+	
+        INSERT INTO community.com (
+            mb_id,
+			co_classification,    
+			co_title,                        
+			co_content  
+        )
+        VALUES (
+            #{mbId},
+            #{coClassification},
+            #{coTitle},
+            #{coContent}
+        )
+	</insert>
+	
+	<insert id="communityfileUpload" parameterType="com.co.kr.domain.CommunityFileDomain">
+        INSERT INTO community.cofiles (
+            co_seq,
+            mb_id,   
+            up_original_file_name,                         
+            up_new_file_name,                      
+            up_file_path,                                   
+            up_file_size
+        )
+        VALUES (
+            #{coSeq},
+            #{mbId},
+            #{upOriginalFileName},
+            #{upNewFileName},
+            #{upFilePath},
+            #{upFileSize}
+        )
+    </insert>
+
+    <update id="coContentUpdate" parameterType="com.co.kr.domain.CommunityContentDomain">
+        UPDATE community.com SET
+                co_seq=#{coSeq},
+                mb_id=#{mbId},
+                co_classification=#{coClassification},
+                co_title=#{coTitle},
+                co_content=#{coContent}, 
+                co_update_at=now()  
+        WHERE co_seq=#{coSeq}
+    </update>
+
+    <update id="coFileUpdate" parameterType="com.co.kr.domain.CommunityFileDomain">
+        UPDATE community.cofiles SET
+                co_seq=#{coSeq},
+                mb_id=#{mbId},
+                up_original_file_name=#{upOriginalFileName},
+                up_new_file_name=#{upNewFileName}, 
+                up_file_path=#{upFilePath},
+                up_file_size=#{upFileSize}
+        WHERE co_seq=#{coSeq}
+    </update>
+
+    <delete id="coContentRemove" parameterType="hashMap">
+       DELETE FROM community.com WHERE co_seq=#{coSeq}
+    </delete>
+	
+    <delete id="coFileRemove" parameterType="com.co.kr.domain.CommunityFileDomain">
+	    DELETE FROM community.cofiles WHERE up_new_file_name = #{upNewFileName}
+	</delete>
+
+	<select id="communitySelectOne" resultType="com.co.kr.domain.CommunityListDomain" parameterType="map">
+	    SELECT co_seq, mb_id, co_classification, co_title, co_content, co_create_at, co_update_at, co_count
+	    FROM community.com where co_seq = #{coSeq}
+	</select>
+
+	<select id="communitySelectOneFile" resultType="com.co.kr.domain.CommunityFileDomain" parameterType="map">
+	    SELECT co_seq, mb_id, up_original_file_name, up_new_file_name, up_file_path, up_file_size
+	    FROM community.view_com where co_seq = #{coSeq}
+	</select>
+	
+	 <update id="coincreaseViewCount" parameterType="int">
+        UPDATE community.com
+        SET co_count = co_count + 1
+        WHERE co_seq = #{coSeq}
+    </update>
+    
+    <select id="cosearchTitle" parameterType="map"
+      resultType="com.co.kr.domain.CommunityListDomain">
+      SELECT co_seq, mb_id, co_classification, co_title, co_content, co_create_at, co_update_at, co_count
+	  FROM community.com
+      WHERE co_title LIKE CONCAT('%', #{coTitle}, '%') order by co_seq desc
+   </select>
+ 	
+</mapper>

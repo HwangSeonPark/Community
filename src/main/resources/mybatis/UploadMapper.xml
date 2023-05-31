@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.co.kr.mapper.UploadMapper">
+
+	<select id="boardList" resultType="com.co.kr.domain.BoardListDomain">
+	  SELECT bd_seq, mb_id, bd_title, bd_university, bd_content, bd_create_at, bd_update_at, bd_count
+	  FROM community.board order by bd_seq desc
+	</select>
+	
+	<insert id="contentUpload" parameterType="com.co.kr.domain.BoardContentDomain"
+	useGeneratedKeys="true"
+        keyProperty="bdSeq" keyColumn="bd_seq">
+	
+        INSERT INTO community.board (
+            mb_id,   
+			bd_title,
+			bd_university,                         
+			bd_content  
+        )
+        VALUES (
+            #{mbId},
+            #{bdTitle},
+            #{bdUniversity},
+            #{bdContent}
+        )
+	</insert>
+	
+	<insert id="fileUpload" parameterType="com.co.kr.domain.BoardFileDomain">
+        INSERT INTO community.files (
+            bd_seq,
+            mb_id,   
+            up_original_file_name,                         
+            up_new_file_name,                      
+            up_file_path,                                   
+            up_file_size
+        )
+        VALUES (
+            #{bdSeq},
+            #{mbId},
+            #{upOriginalFileName},
+            #{upNewFileName},
+            #{upFilePath},
+            #{upFileSize}
+        )
+    </insert>
+
+    <update id="bdContentUpdate" parameterType="com.co.kr.domain.BoardContentDomain">
+        UPDATE community.board SET
+                bd_seq=#{bdSeq},
+                mb_id=#{mbId},
+                bd_title=#{bdTitle},
+                bd_university=#{bdUniversity},
+                bd_content=#{bdContent}, 
+                bd_update_at=now()  
+        WHERE bd_seq=#{bdSeq}
+    </update>
+
+    <update id="bdFileUpdate" parameterType="com.co.kr.domain.BoardFileDomain">
+        UPDATE community.files SET
+                bd_seq=#{bdSeq},
+                mb_id=#{mbId},
+                up_original_file_name=#{upOriginalFileName},
+                up_new_file_name=#{upNewFileName}, 
+                up_file_path=#{upFilePath},
+                up_file_size=#{upFileSize}
+        WHERE bd_seq=#{bdSeq}
+    </update>
+
+    <delete id="bdContentRemove" parameterType="hashMap">
+       DELETE FROM community.board WHERE bd_seq=#{bdSeq}
+    </delete>
+
+    <delete id="bdFileRemove" parameterType="com.co.kr.domain.BoardFileDomain">
+	    DELETE FROM community.files WHERE up_new_file_name = #{upNewFileName}
+	</delete>
+
+	<select id="boardSelectOne" resultType="com.co.kr.domain.BoardListDomain" parameterType="map">
+	    SELECT bd_seq, mb_id,  bd_title, bd_university, bd_content, bd_create_at, bd_update_at, bd_count
+	    FROM community.board where bd_seq = #{bdSeq}
+	</select>
+
+	<select id="boardSelectOneFile" resultType="com.co.kr.domain.BoardFileDomain" parameterType="map">
+	    SELECT bd_seq, mb_id, up_original_file_name, up_new_file_name, up_file_path, up_file_size
+	    FROM community.view_board where bd_seq = #{bdSeq}
+	</select>
+	
+	 <update id="increaseViewCount" parameterType="int">
+        UPDATE community.board
+        SET bd_count = bd_count + 1
+        WHERE bd_seq = #{bdSeq}
+    </update>
+    
+    <select id="bdsearchTitle" parameterType="map"
+      resultType="com.co.kr.domain.BoardListDomain">
+      SELECT bd_seq, mb_id, bd_title, bd_university, bd_content, bd_create_at, bd_update_at, bd_count
+	  FROM community.board
+      WHERE bd_title LIKE CONCAT('%', #{bdTitle}, '%') order by bd_seq desc
+   </select>
+ 	
+</mapper>
