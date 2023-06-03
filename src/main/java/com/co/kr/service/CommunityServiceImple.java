@@ -114,7 +114,7 @@ public class CommunityServiceImple implements CommunityService {
 					
 				}
 				
-				Path rootPath = Paths.get(new File("/Users/hwangseon").toString(),"community", File.separator).toAbsolutePath().normalize();			
+				Path rootPath = Paths.get(new File("C://").toString(),"community", File.separator).toAbsolutePath().normalize();			
 				File pathCheck = new File(rootPath.toString());
 				
 				if(!pathCheck.exists()) pathCheck.mkdirs();
