@@ -18,7 +18,7 @@ public class DbConfig {
 	public DataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://community.cxz8tnpwhj0m.ap-northeast-2.rds.amazonaws.com/jsp?autoReconnect=true&serverTimezone=UTC&characterEncoding=UTF-8");
+		dataSource.setUrl("jdbc:mysql://community.cxz8tnpwhj0m.ap-northeast-2.rds.amazonaws.com/community?autoReconnect=true&serverTimezone=UTC&characterEncoding=UTF-8");
 		dataSource.setUsername("root");
 		dataSource.setPassword("rootroot");
 		dataSource.setMaxIdle(5);
