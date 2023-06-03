@@ -114,7 +114,7 @@ public class UploadServiceImple implements UploadService {
 					
 				}
 				
-				Path rootPath = Paths.get(new File("/Users/hwangseon/").toString(),"upload", File.separator).toAbsolutePath().normalize();			
+				Path rootPath = Paths.get(new File("C://").toString(),"upload", File.separator).toAbsolutePath().normalize();			
 				File pathCheck = new File(rootPath.toString());
 				
 				if(!pathCheck.exists()) pathCheck.mkdirs();
