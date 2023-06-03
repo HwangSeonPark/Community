@@ -134,7 +134,9 @@ public class UploadServiceImple implements UploadService {
 								originalFileExtension = ".jpg";
 							}else if(contentType.contains("image/png")) {
 								originalFileExtension = ".png";
-							}else {
+							} else if (contentType.contains("image/gif")) {
+				                originalFileExtension = ".gif";
+				            }else {
 								break;
 							}
 						}
